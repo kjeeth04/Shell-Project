@@ -1,0 +1,182 @@
+parse(argument, delimeters):
+    //Using the specified delimiter(s), the argument is broken up into smaller pieces and is returned as a array of strings
+
+exit_shell():
+    //Exits shell using the built-in exit() function from stdlib.h
+    exit(0)
+
+help():
+    //Using fgetc() in a while loop, prints from a text file containing all possible commands that are usable in the shell
+    FILE help = fopen("help.txt", "r")
+
+    while (c = fgetc) is not EOF:
+        printf(c)
+
+    fclose(help)
+
+pwd():
+    //Using getcwd() to obtain the absolute path to the current directory and prints the absolute path
+
+    char string[]
+    getcwd(string, size)
+    printf(string)
+
+cd(location):
+    //Using chdir(), the current directory is switched to the specified location
+    chdir(location)
+    
+    if there is an error:
+        print("error")
+
+wait():
+    //Keeps using wait(NULL) which will keep waiting for child processes running in the background until there are none left
+    while background_count > 0:
+        wait(NULL)
+        background_count--
+    
+
+rm_space(string):
+    //Removes all white space from a specified string.
+    //used to ensure that when arguments are entered into system calls, white space does not cause any errors
+
+pipe_handler(pipeargs, pipelength, background):
+    fork()
+    Within the Child Process:
+        pipe_arr[pipelength-1][2]
+        for int[2] in pipe_arr:
+            pipe(int[2])
+
+        for arg in pipeargs:
+            fork()
+            Within the Child Process:
+                if not the first iteration:
+                swap STDIN with read end file descriptor of previous pipe
+
+                if not the last iteration:
+                swap STDOUT with write end file descriptor of current pipe
+
+                for every int[2] in pipe_arr:
+                close(int[2]);
+
+                //Then you break up each individual argument and execute it using the same execution logic in path()
+
+            Within the Parent Process:
+                for every int[2] in pipe_arr:
+                close(int[2]);
+                wait(NULL)
+
+    Within the Parent Process:
+        if background == 0:
+            wait(NULL)
+        if background == 1:
+            waitpid(-1, &wstatus, WNOHANG)
+
+path(arguments, redirection_flag, redirection_location_1, redirection_location_2, background):
+    fork() is used to create child process.
+    Within the Child Process:
+
+        //Depending on the value of redirection_flag, use dup2() to switch STDIN or STDOUT to redirection_location_1
+        //If both input and output redirection is to be done, then STDIN is switched to redirection_location_1, and 
+        //STDOUT is switched to redirection_location_2. rm_space() is used here to trim any whitespace from redirection_location_1 or redirection_location_2
+        //if pipein is not empty (meaning pipe handling is required), then this whole process will also occur within pipein to account for input/output redirection within the pipe
+
+        //If there is not simultaneous input and output redirection, redirection_location_2 is not used, and if there is not input or
+        //output redirection, then redirection_location_1 is not used either
+
+        execv(arguments[0], arguments)
+
+        //If the above execv does not work, then argument[0] is either not an absolute path or does not exist. First check if it is
+        //not an absolute path
+
+        possible_paths = parse($PATH, ":")
+        for every possible_path in possible_paths:
+            strcat(possible_path, arguments[0])
+            execv(possible_path, arguments)
+
+        If execv does not successfully run during any iteration of the above for loop:
+            printf("Error, invalid command")
+            exit(0)
+
+    Within the Parent Process:
+        //when wait(NULL) is used, this will cause the parent process to pause until a child process is completed
+        //Checks whether or not to wait for the process or to let it run in the background
+        if background == 0:
+            wait(NULL)
+        if background == 1:
+            waitpid(-1, &wstatus, WNOHANG)
+
+main():
+//Tracks the amount of background tasks.
+background_count = 0
+    while (1):
+        //User input
+        fgets(rawinput)
+        background = 0
+        //Checks to see whether or not to run process in background
+        if last char in rawinput == '&':
+            background = 1
+            background_count++
+            rawinput[last_position] == '\0';
+
+        //Used to assist in pipe handling
+        char** pipein = malloc()
+        pipeloop = 1
+
+        if rawinput is empty:
+            continue
+
+        //Testing for pipes:
+        pipes = parse(rawinput, "|")
+        if (pipelength > 1):
+            pipeloop = pipelength
+        
+        if (pipelength > 1){
+            pipe_handler(pipes, pipelength, background)
+            continue;
+        }
+   
+        //if pipelength is 1 (no pipes), this loop will only execute once
+        for (int i = 0; i < pipelength; ++i):
+            //ioflag can be -1 for no redirection, 0 for input redirection, 1 for output redirection, or 2 for input+output redirection
+            ioflag = -1
+            output_test: parse(pipe[i], ">")
+            if (output_test_length > 1):
+                ioflag = 1
+            input_test: parse(rawinput, "<")
+            if (input_test_length > 1):
+                ioflag = 0
+            if (output_test_length and input_test_length > 1):
+                ioflag = 2
+
+            input = parse([either input_test or output_test depending on value of ioflag], " ")
+
+        if (pipelength > 1 and i == 0):
+            pipine = input
+        else:
+            //Check for built-in commands
+            if (input[0] == "exit"):
+                exit_shell();
+            else if (input[0] == "help"):
+                help();
+            else if (input[0] == "pwd"):
+                pwd();
+            else if (input[0] == "cd"):
+                cd(input[1])
+            else if (input[0] == "wait"):
+                wait()
+        
+            //Else use path():
+            else {
+                //redirection_location_1 and redirection_location_2 will have their values be modified based on what the value of ioflag is. redirection_location_2 will have the
+                //value of " " if there is no both input+output redirection, and redirection_location_1 will have the value of " " if there is no output or input redirection at all
+                path(input, ioflag, redirection_location_1, redirection_location_2, background, pipelength, pipein)
+            }
+
+
+        
+        
+
+
+        
+
+

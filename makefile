@@ -1,0 +1,2 @@
+main: shell.c help.c pwd.c parse.c exit_shell.c cd.c path.c rm_space.c wait_all.c pipe_handler.c
+	gcc -o shell shell.c help.c pwd.c parse.c exit_shell.c cd.c path.c  rm_space.c wait_all.c pipe_handler.c -Wall -Werror
