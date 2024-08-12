@@ -3,6 +3,7 @@
 # Make sure to compile code using the provided makefile.
 # This program was designed and optimized to compile and execute most efficiently in a Linux/UNIX environment. 
 # Compiling or running in a non-Linux/UNIX environment may cause errors
+# The 'help' function does not work on systems outside of the Temple University Servers
 
 Core Shell (shell.c) exists and runs indefinitely until 'exit' is called.
 
